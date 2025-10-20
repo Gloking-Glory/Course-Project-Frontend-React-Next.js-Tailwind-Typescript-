@@ -6,16 +6,17 @@ import {
     CourseRspType, CourseListRspType, GenErrType, GenRspType
 } from "./apiTypes";
 
-const searchQuery = (course_title?: string, university?: string) => {
+const searchQuery = (course_title?: string, university?: string, page: number = 1) => {
     const params = new URLSearchParams();
+    params.append('page', page.toString());
     if (course_title) params.append('course_title', course_title);
     if (university) params.append('university', university);
-    return params.toString() ? `?${params.toString()}` : "";
+    return params.toString();
 }
 
 const fetchCourses = async (course_title?: string, university?: string, page: number = 1) => {
-    const query = searchQuery(course_title, university);
-    return apiRequest.get<CourseListRspType>(`/courses/?page=${page}${query}`);
+    const query = searchQuery(course_title, university, page);
+    return apiRequest.get<CourseListRspType>(`/courses/?${query}`);
 };
 
 const addCourse = (data: CourseData) => apiRequest.post<CourseRspType>('/courses/add-course/', data);

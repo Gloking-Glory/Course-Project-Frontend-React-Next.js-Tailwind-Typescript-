@@ -42,6 +42,9 @@ export const CourseForm = ({ refetchList }: Props) => {
         setAlertOpen(true);
         refetchList();
         reset();
+        setTimeout(() => {
+          setAlertOpen(false);
+        }, 1500);
       },
       onError: (error: AxiosError<GenErrType>) => {
         const res = error.response?.data;
@@ -50,8 +53,8 @@ export const CourseForm = ({ refetchList }: Props) => {
               ? Object.values(res)[0]?.[0] || 'Failed to add course successfully'
               : 'Failed to add course successfully';
         setAlertType('error');
-        setAlertOpen(true);
         setAlertMessage({ title: 'Course Adding Failed!', subtitle: errMsg});
+        setAlertOpen(true);
       },
     });
   };

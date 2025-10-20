@@ -44,6 +44,9 @@ export default function CoursesTable({ courses, loading, refetchList }: Props) {
           setAlertMessage({ title: 'Course Deleted!', subtitle: 'Course has been deleted successfully'});
           setAlertOpen(true);
           refetchList();
+          setTimeout(() => {
+            setAlertOpen(false);
+          }, 1500);
         },
         onError: (error: AxiosError<GenErrType>) => {
           const res = error.response?.data;
