@@ -92,17 +92,17 @@ export default function CoursesTable({ courses, loading, refetchList }: Props) {
                 courses.map((course) => (
                   <tr
                     key={course.id}
-                    className="hover:bg-blue-50/80 transition cursor-pointer border-b border-blue-100"
+                    className="hover:bg-blue-50/80 transition border-b border-blue-100"
                   >
                     <td
                       onClick={() => router.push(`/courses/${course.id}`)}
-                      className="px-4 py-2 text-sm whitespace-nowrap"
+                      className="px-4 py-2 text-sm whitespace-nowrap cursor-pointer"
                     >
                       {course.course_title}
                     </td>
                     <td
-                      className="px-4 py-2 text-sm whitespace-nowrap"
                       onClick={() => router.push(`/courses/${course.id}`)}
+                      className="px-4 py-2 text-sm whitespace-nowrap cursor-pointer"
                     >
                       {course.university}
                     </td>

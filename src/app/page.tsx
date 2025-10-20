@@ -1,13 +1,18 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { CourseForm } from "../components/courseForm";
 import CoursesTable from "../components/courseTable";
 import { CourseRspType } from "../hooks/apiTypes";
 import { useCoursesList } from "../hooks/useCourses";
+import SearchCourses from "../components/searchCourses";
 
 export default function CoursesPage() {
-  const { data, isPending, refetch  } = useCoursesList();
+  const [searchFilter, setSearchFilter] = useState<{ course_title: string | null; university: string | null }>({
+    course_title: null,
+    university: null,
+  });
+  const { data, isPending, refetch  } = useCoursesList(searchFilter.course_title || '', searchFilter.university || '');
   const allCourses: CourseRspType[] = data?.results?.courses || [];
 
   return (
@@ -19,14 +24,14 @@ export default function CoursesPage() {
           </div>
         </div>
 
-        <div className="flex justify-start">
-          <div className="w-full max-w-4xl">
-            <CoursesTable
-              courses={allCourses}
-              loading={isPending}
-              refetchList={(refetch)}
-            />
-          </div>
+        <div className="flex flex-col justify-start w-full max-w-4xl gap-6">
+          <SearchCourses handleSearch={setSearchFilter} />
+
+          <CoursesTable
+            courses={allCourses}
+            loading={isPending}
+            refetchList={(refetch)}
+          />
         </div>
       </div>
     </div>

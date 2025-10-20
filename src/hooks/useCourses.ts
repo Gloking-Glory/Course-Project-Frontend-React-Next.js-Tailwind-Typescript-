@@ -6,7 +6,18 @@ import {
     CourseRspType, CourseListRspType, GenErrType, GenRspType
 } from "./apiTypes";
 
-const fetchCourses = () => apiRequest.get<CourseListRspType>('/courses/');
+const searchQuery = (course_title?: string, university?: string) => {
+    const params = new URLSearchParams();
+    if (course_title) params.append('course_title', course_title);
+    if (university) params.append('university', university);
+    return params.toString() ? `?${params.toString()}` : "";
+}
+
+const fetchCourses = async (course_title?: string, university?: string) => {
+    const query = searchQuery(course_title, university);
+    return apiRequest.get<CourseListRspType>(`/courses/${query}`);
+};
+
 const addCourse = (data: CourseData) => apiRequest.post<CourseRspType>('/courses/add-course/', data);
 const updateCourse = (id: CourseIdData, data: CourseData) => apiRequest.put<CourseRspType>(`/courses/${id.id}/update/`, data);
 const deleteCourse = (data: CourseIdData) => apiRequest.delete<GenRspType>(`/courses/${data.id}/delete/`);
@@ -18,10 +29,10 @@ export const useAddCourse = () => {
     });
 };
 
-export const useCoursesList = () => {
+export const useCoursesList = (course_title: string, university: string) => {
     return useQuery<CourseListRspType, AxiosError<GenErrType>>({
-        queryKey: ['coursesList'],
-        queryFn: fetchCourses,
+        queryKey: ['coursesList', course_title, university],
+        queryFn: () => fetchCourses(course_title, university),
     });
 };
 
