@@ -6,13 +6,15 @@ import CoursesTable from "../components/courseTable";
 import { CourseRspType } from "../hooks/apiTypes";
 import { useCoursesList } from "../hooks/useCourses";
 import SearchCourses from "../components/searchCourses";
+import Pagination from "../components/utils/pagination";
 
 export default function CoursesPage() {
   const [searchFilter, setSearchFilter] = useState<{ course_title: string | null; university: string | null }>({
     course_title: null,
-    university: null,
+    university: null, 
   });
-  const { data, isPending, refetch  } = useCoursesList(searchFilter.course_title || '', searchFilter.university || '');
+  const [page, setPage] = useState(1);
+  const { data, isPending, refetch  } = useCoursesList(searchFilter.course_title || '', searchFilter.university || '', page);
   const allCourses: CourseRspType[] = data?.results?.courses || [];
 
   return (
@@ -32,6 +34,14 @@ export default function CoursesPage() {
             loading={isPending}
             refetchList={(refetch)}
           />
+
+          <Pagination
+            count={data?.count || 0}
+            next={data?.next || null}
+            previous={data?.previous || null}
+            currentPage={page}
+            onPageChange={(page) => setPage(page)}
+         />
         </div>
       </div>
     </div>

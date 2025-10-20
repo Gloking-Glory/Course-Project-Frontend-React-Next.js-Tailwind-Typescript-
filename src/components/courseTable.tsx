@@ -23,12 +23,8 @@ export default function CoursesTable({ courses, loading, refetchList }: Props) {
   const [alertMessage, setAlertMessage] = useState({title: '', subtitle: ''});
   const [updateModal, setUpdateModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<CourseData>({
-    id: '',
-    course_title: '',
-    university: '',
-    duration: '',
-    location: '',
-    fees: 0,
+    id: '', course_title: '', university: '',
+    duration: '', location: '', fees: 0,
   });
   
   const { mutate, isPending } = useDelCourse();

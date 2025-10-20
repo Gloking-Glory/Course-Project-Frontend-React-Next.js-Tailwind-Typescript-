@@ -13,9 +13,9 @@ const searchQuery = (course_title?: string, university?: string) => {
     return params.toString() ? `?${params.toString()}` : "";
 }
 
-const fetchCourses = async (course_title?: string, university?: string) => {
+const fetchCourses = async (course_title?: string, university?: string, page: number = 1) => {
     const query = searchQuery(course_title, university);
-    return apiRequest.get<CourseListRspType>(`/courses/${query}`);
+    return apiRequest.get<CourseListRspType>(`/courses/?page=${page}${query}`);
 };
 
 const addCourse = (data: CourseData) => apiRequest.post<CourseRspType>('/courses/add-course/', data);
@@ -29,10 +29,10 @@ export const useAddCourse = () => {
     });
 };
 
-export const useCoursesList = (course_title: string, university: string) => {
+export const useCoursesList = (course_title?: string, university?: string, page: number = 1) => {
     return useQuery<CourseListRspType, AxiosError<GenErrType>>({
-        queryKey: ['coursesList', course_title, university],
-        queryFn: () => fetchCourses(course_title, university),
+        queryKey: ['coursesList', course_title, university, page],
+        queryFn: () => fetchCourses(course_title, university, page),
     });
 };
 
